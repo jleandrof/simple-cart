@@ -1,0 +1,20 @@
+version: "3"
+services:
+#  simpleecommerce:
+#    build: .
+#    ports:
+#      - "3001:3001"
+#    environment:
+#      - DATABASE_HOST=database
+#      - POSTGRES_PASSWORD=123456
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=123456
+    volumes:
+      - database_volume:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+volumes:
+  database_volume: {}
