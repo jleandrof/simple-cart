@@ -61,8 +61,10 @@ public class ShoppingCart {
 
     public ShoppingCartClient toClient() {
         var itemClientList = new ArrayList<ShoppingCartItemClient>();
+        System.out.println(items);
         for(var item : items) {
             itemClientList.add(item.toClient());
+            System.out.println(item);
         }
 
         return new ShoppingCartClient(id, uuid, user.getId(), itemClientList);

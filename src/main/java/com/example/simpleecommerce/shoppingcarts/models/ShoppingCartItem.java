@@ -7,6 +7,7 @@ import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -39,5 +40,18 @@ public class ShoppingCartItem {
 
     public ShoppingCartItemClient toClient() {
         return new ShoppingCartItemClient(product.getId(), quantity);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ShoppingCartItem that = (ShoppingCartItem) o;
+        return product.equals(that.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(product);
     }
 }

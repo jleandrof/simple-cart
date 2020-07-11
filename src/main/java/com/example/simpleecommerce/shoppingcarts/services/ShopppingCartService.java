@@ -8,6 +8,7 @@ import com.example.simpleecommerce.shoppingcarts.exceptions.ShoppingCartNotFound
 import com.example.simpleecommerce.shoppingcarts.models.ShoppingCart;
 import com.example.simpleecommerce.shoppingcarts.models.ShoppingCartClient;
 import com.example.simpleecommerce.shoppingcarts.models.ShoppingCartItem;
+import com.example.simpleecommerce.shoppingcarts.models.dto.ShoppingCartItemDTO;
 import com.example.simpleecommerce.shoppingcarts.models.dto.UpdateShoppingCartDTO;
 import com.example.simpleecommerce.shoppingcarts.models.dto.ShoppingCartDTO;
 import com.example.simpleecommerce.shoppingcarts.repositories.ShoppingCartItemRepository;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @Service
 public class ShopppingCartService {
@@ -108,5 +108,37 @@ public class ShopppingCartService {
         }
         shoppingCartItemRepository.saveAll(shoppingCart.getItems());
         return shoppingCartRepository.save(shoppingCart);
+    }
+
+    public ShoppingCartClient onAddProductToCart(Long userId, ShoppingCartItemDTO shoppingCartItemDTO) throws UserNotFoundException, ProductNotFoundException {
+        User user;
+        try {
+            user = userRepository.findById(userId).get();
+        } catch (Exception e) {
+            throw new UserNotFoundException("Usuário não encontrado");
+        }
+
+        Product product;
+        try {
+            product = productRepository.findById(shoppingCartItemDTO.getProductId()).get();
+        } catch (Exception e) {
+            throw new ProductNotFoundException("Produto não encontrado");
+        }
+        var shoppingCart = user.getShoppingCart();
+        ShoppingCartItem item;
+        var newItem = new ShoppingCartItem(product, shoppingCartItemDTO.getQuantity(), shoppingCart);
+        if(shoppingCart.getItems().contains(newItem)) {
+            var i = shoppingCart.getItems().indexOf(newItem);
+            System.out.println(i);
+            System.out.println(shoppingCart.getItems());
+            item = shoppingCart.getItems().get(i);
+            item.setQuantity(item.getQuantity() + shoppingCartItemDTO.getQuantity());
+            item = shoppingCartItemRepository.save(item);
+        } else {
+            item = shoppingCartItemRepository.save(newItem);
+        }
+        shoppingCart.add(item);
+
+        return shoppingCartRepository.save(shoppingCart).toClient();
     }
 }

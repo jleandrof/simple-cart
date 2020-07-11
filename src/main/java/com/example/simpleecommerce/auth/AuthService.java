@@ -48,6 +48,12 @@ public class AuthService {
         return signedJWT.verify(new MACVerifier(getUserSecret().getBytes())) || verifyAdminToken(token);
     }
 
+    public JWTClaimsSet getTokenClaims(String token) throws ParseException {
+        SignedJWT signedJWT = SignedJWT.parse(token);
+
+        return signedJWT.getJWTClaimsSet();
+    }
+
     private String getAdminSecret() {
         return Consts.getEnv("ADMIN_SECRET").orElse("jcfJB9LM87bllml5EeWyjAvThDz2O6CZ");
     }

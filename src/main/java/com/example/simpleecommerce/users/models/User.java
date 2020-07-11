@@ -1,13 +1,16 @@
 package com.example.simpleecommerce.users.models;
 
+import com.example.simpleecommerce.shoppingcarts.models.ShoppingCart;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
@@ -27,6 +30,9 @@ public class User {
     private String password;
 
     private UserRoles role;
+
+    @OneToOne
+    private ShoppingCart shoppingCart;
 
     public User(String name, String email, String password, UserRoles role) {
         this.name = name;
