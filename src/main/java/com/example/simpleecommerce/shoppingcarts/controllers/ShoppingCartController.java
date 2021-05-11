@@ -22,7 +22,7 @@ public class ShoppingCartController {
     }
 
     @PostMapping
-    public ResponseEntity onCreateProduct(@RequestBody ShoppingCartDTO shoppingCartDTO) {
+    public ResponseEntity onCreateCart(@RequestBody ShoppingCartDTO shoppingCartDTO) {
         try {
             return new ResponseEntity(new SuccessfullResult(shopppingCartService.onCreate(shoppingCartDTO)), HttpStatus.OK);
         } catch (Exception e) {
@@ -32,7 +32,7 @@ public class ShoppingCartController {
     }
 
     @PatchMapping
-    public ResponseEntity onCreateProduct(@RequestBody UpdateShoppingCartDTO updateShoppingCartDTO) {
+    public ResponseEntity onUpdateCart(@RequestBody UpdateShoppingCartDTO updateShoppingCartDTO) {
         try {
             return new ResponseEntity(new SuccessfullResult(shopppingCartService.onUpdateShoppingCart(updateShoppingCartDTO)), HttpStatus.OK);
         } catch (Exception e) {
